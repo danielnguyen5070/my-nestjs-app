@@ -1,4 +1,13 @@
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  ValidateNested,
+  IsArray,
+  ArrayMinSize,
+} from 'class-validator';
+import { Type } from 'class-transformer';
+import { CreatePostDto } from './create-post.dto';
 
 export class CreateUserDto {
   @IsString()
@@ -7,4 +16,14 @@ export class CreateUserDto {
 
   @IsEmail()
   email!: string;
+
+  @IsString()
+  @IsNotEmpty()
+  password!: string;
+
+  @IsArray()
+  @ArrayMinSize(1)
+  @ValidateNested({ each: true })
+  @Type(() => CreatePostDto)
+  posts!: CreatePostDto[];
 }
